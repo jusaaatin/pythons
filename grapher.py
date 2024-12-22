@@ -1,3 +1,4 @@
+import math
 #grid defaults
 class grid:
     x = int
@@ -69,7 +70,7 @@ def deletePoint(label):
         return
     for i in range(len(activeGrid)):
         if activeGrid[i-1].label.strip() == label:
-            print("Point " + activeGrid[i-1].label.strip() + "Removed!")
+            print("Point " + activeGrid[i-1].label.strip() + " Removed!")
             activeGrid.pop(i-1)
     usedLabels.remove(label)
 def printGrid():
@@ -98,6 +99,57 @@ def pointCoordinateDuplicated(x, y) -> bool:
 def pointLabelDuplicated(label) -> bool:
     if label in usedLabels: return True # label USED
     else: return False
+def splitxy(label) -> tuple:
+    for i in range(len(activeGrid)):
+        if activeGrid[i-1].label.strip() == label:
+            return (activeGrid[i-1].x, activeGrid[i-1].y)
+    return None
+def twoPointDistance(p1, p2) -> float:
+    p1xy = splitxy(p1)
+    p1x = p1xy[0]
+    p1y = p1xy[1]
+    p2xy = splitxy(p2)
+    p2x = p2xy[0]
+    p2y = p2xy[1]
+
+    xdist = abs(p1x - p2x)
+    ydist = abs(p1y - p2y)
+    return (xdist**2 + ydist**2)**0.5
+def threePointArea(p1, p2, p3) -> float:
+    p1xy = splitxy(p1)
+    p1x = p1xy[0]
+    p1y = p1xy[1]
+    p2xy = splitxy(p2)
+    p2x = p2xy[0]
+    p2y = p2xy[1]
+    p3xy = splitxy(p3)
+    p3x = p3xy[0]
+    p3y = p3xy[1]
+
+    return 0.5 * abs((p1x*(p2y-p3y)) + (p2x*(p3y-p1y)) + (p3x*(p1y-p2y)))
+def pointModulus(label) -> float:
+    pxy = splitxy(label)
+    px = pxy[0]
+    py = pxy[1]
+    return (px**2 + py**2)**0.5
+def pointArg(label) -> float:
+    pxy = splitxy(label)
+    px = abs(pxy[0])
+    py = abs(pxy[1])
+    alpha = math.atan(py/px)
+    if pxy[0] < 0 and pxy[1] > 0:
+        return math.pi - alpha
+    elif pxy[0] < 0 and pxy[1] < 0:
+        return math.pi + alpha
+    elif pxy[0] > 0 and pxy[1] < 0:
+        return 2*math.pi - alpha
+    else: return alpha
+def pointBaseAngle(label) -> float:
+    pxy = splitxy(label)
+    px = abs(pxy[0])
+    py = abs(pxy[1])
+    return math.atan(py/px)
+
 def userLoop():
     fullcommand = str(input("Commands: showGraph, newPoint, deletePoint, reset, exit -> "))
     command = fullcommand.split(" ")[0]
@@ -132,6 +184,32 @@ def userLoop():
         print("Graph Reset!")
     elif command == "exit": 
         exit()
+    elif command == "2pointdistance" or command == "distance":
+        if secondCommand != None: p1 = str(secondCommand)
+        else: p1 = str(input("Enter name of first point: "))
+        if thirdCommand != None: p2 = str(thirdCommand)
+        else: p2 = str(input("Enter name of second point: "))
+        print("Distance between " + p1 + " and " + p2 + " is " + str(twoPointDistance(p1, p2)))
+    elif command == "3pointarea" or command == "area":
+        if secondCommand != None: p1 = str(secondCommand)
+        else: p1 = str(input("Enter name of first point: "))
+        if thirdCommand != None: p2 = str(thirdCommand)
+        else: p2 = str(input("Enter name of second point: "))
+        if fourthCommand != None: p3 = str(fourthCommand)
+        else: p3 = str(input("Enter name of third point: "))
+        print("Area of triangle " + p1 + p2 + p3 + " is " + str(threePointArea(p1, p2, p3)))
+    elif command == "pointmodulus" or command == "modulus":
+        if secondCommand != None: p1 = str(secondCommand)
+        else: p1 = str(input("Enter name of point: "))
+        print("Modulus of " + p1 + " is " + str(pointModulus(p1)))
+    elif command == "pointarg" or command == "arg" or command == "angle" or command == "pointargument" or command == "pointangle" or command == "argument":
+        if secondCommand != None: p1 = str(secondCommand)
+        else: p1 = str(input("Enter name of point: "))
+        print("Argument of " + p1 + " is " + str(pointArg(p1)))
+    elif command == "pointbaseangle" or command == "baseangle" or command == "pointalpha" or command == "alpha":
+        if secondCommand != None: p1 = str(secondCommand)
+        else: p1 = str(input("Enter name of point: "))
+        print("Base angle of " + p1 + " is " + str(pointBaseAngle(p1)))
     else: print("Invalid command")
 
 resetGrid()
