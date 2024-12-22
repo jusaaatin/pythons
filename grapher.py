@@ -221,5 +221,3 @@ resetGrid()
 print("Welcome to Grapher.py (◕‿◕✿)")
 while True:
     userLoop()
-
-            
