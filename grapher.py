@@ -70,7 +70,7 @@ def deletePoint(label):
     for i in range(len(activeGrid)):
         if activeGrid[i].label.strip() == label:
             activeGrid.pop(i)
-            print("Point Removed!")
+            print("Point " + activeGrid[i].label.strip() + "Removed!")
     usedLabels.remove(label)
 def printGrid():
     for y in range(gridBoundaries[2]+gridBoundaries[3]+1):
@@ -99,24 +99,33 @@ def pointLabelDuplicated(label) -> bool:
     if label in usedLabels: return True # label USED
     else: return False
 def userLoop():
-    command = str(input("Commands: showGraph, newPoint, deletePoint, reset, exit -> "))
-    if command == "showgraph" or command == "showGraph": 
+    fullcommand = str(input("Commands: showGraph, newPoint, deletePoint, reset, exit -> "))
+    command = fullcommand.split(" ")[0]
+    secondCommand = fullcommand.split(" ")[1] if len(fullcommand.split(" ")) > 1 else None
+    thirdCommand = fullcommand.split(" ")[2] if len(fullcommand.split(" ")) > 2 else None
+    fourthCommand = fullcommand.split(" ")[3] if len(fullcommand.split(" ")) > 3 else None
+
+    if command == "showgraph" or command == "showGraph" or command == "graph": 
         printGrid()
     elif command == "newpoint" or command == "newPoint":
-        x = int(input("Enter x coordinate: "))
-        y = int(input("Enter y coordinate: "))
+        if secondCommand != None: x = int(secondCommand)
+        else: x = int(input("Enter x coordinate: "))
+        if thirdCommand != None: y = int(thirdCommand)
+        else: y = int(input("Enter y coordinate: "))
         while pointCoordinateDuplicated(x,y):
             print("Point already exists at coordinates")
             x = int(input("Enter x coordinate: "))
             y = int(input("Enter y coordinate: "))
-        label = str(input("Enter unique label (limited to one character): "))
+        if fourthCommand != None: label = str(fourthCommand)
+        else: label = str(input("Enter unique label (limited to one character): "))
         while pointLabelDuplicated(label):
             print("Label already exists")
             label = str(input("Enter unique label (limited to one character): "))
         appendToGrid(x, y, label)
         print("Point " + label + " Added!")
     elif command == "deletepoint" or command == "deletePoint": 
-        deleteLabel = str(input("Enter point to delete: "))
+        if secondCommand != None: deleteLabel = str(secondCommand)
+        else: deleteLabel = str(input("Enter point to delete: "))
         deletePoint(deleteLabel)
     elif command == "reset": 
         resetGrid()
