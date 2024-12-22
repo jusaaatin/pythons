@@ -68,9 +68,9 @@ def deletePoint(label):
         print("Point does not exist") 
         return
     for i in range(len(activeGrid)):
-        if activeGrid[i].label.strip() == label:
-            activeGrid.pop(i)
-            print("Point " + activeGrid[i].label.strip() + "Removed!")
+        if activeGrid[i-1].label.strip() == label:
+            print("Point " + activeGrid[i-1].label.strip() + "Removed!")
+            activeGrid.pop(i-1)
     usedLabels.remove(label)
 def printGrid():
     for y in range(gridBoundaries[2]+gridBoundaries[3]+1):
