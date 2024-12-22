@@ -151,7 +151,12 @@ def pointBaseAngle(label) -> float:
     return math.atan(py/px)
 
 def userLoop():
-    fullcommand = str(input("Commands: showGraph, newPoint, deletePoint, reset, exit -> "))
+    print("""Grapher Commands:
+    Graph: showGraph, resetGraph
+    Points: newPoint, deletePoint
+    Calculations: 2PointDistance, 3PointArea, PointModulus, PointArgument, PointBaseAngle
+    Exit - Close the program""")
+    fullcommand = str(input("Enter Command -> "))
     command = fullcommand.split(" ")[0]
     secondCommand = fullcommand.split(" ")[1] if len(fullcommand.split(" ")) > 1 else None
     thirdCommand = fullcommand.split(" ")[2] if len(fullcommand.split(" ")) > 2 else None
@@ -179,18 +184,18 @@ def userLoop():
         if secondCommand != None: deleteLabel = str(secondCommand)
         else: deleteLabel = str(input("Enter point to delete: "))
         deletePoint(deleteLabel)
-    elif command == "reset": 
+    elif command == "reset" or command == "resetgraph": 
         resetGrid()
         print("Graph Reset!")
     elif command == "exit": 
         exit()
-    elif command == "2pointdistance" or command == "distance":
+    elif command == "2pointdistance" or command == "distance" or command == "2PointDistance":
         if secondCommand != None: p1 = str(secondCommand)
         else: p1 = str(input("Enter name of first point: "))
         if thirdCommand != None: p2 = str(thirdCommand)
         else: p2 = str(input("Enter name of second point: "))
         print("Distance between " + p1 + " and " + p2 + " is " + str(twoPointDistance(p1, p2)))
-    elif command == "3pointarea" or command == "area":
+    elif command == "3pointarea" or command == "area" or command == "3PointArea":
         if secondCommand != None: p1 = str(secondCommand)
         else: p1 = str(input("Enter name of first point: "))
         if thirdCommand != None: p2 = str(thirdCommand)
@@ -198,15 +203,15 @@ def userLoop():
         if fourthCommand != None: p3 = str(fourthCommand)
         else: p3 = str(input("Enter name of third point: "))
         print("Area of triangle " + p1 + p2 + p3 + " is " + str(threePointArea(p1, p2, p3)))
-    elif command == "pointmodulus" or command == "modulus":
+    elif command == "pointmodulus" or command == "modulus" or command == "PointModulus":
         if secondCommand != None: p1 = str(secondCommand)
         else: p1 = str(input("Enter name of point: "))
         print("Modulus of " + p1 + " is " + str(pointModulus(p1)))
-    elif command == "pointarg" or command == "arg" or command == "angle" or command == "pointargument" or command == "pointangle" or command == "argument":
+    elif command == "pointarg" or command == "arg" or command == "angle" or command == "pointargument" or command == "pointangle" or command == "argument" or command == "PointArgument":
         if secondCommand != None: p1 = str(secondCommand)
         else: p1 = str(input("Enter name of point: "))
         print("Argument of " + p1 + " is " + str(pointArg(p1)))
-    elif command == "pointbaseangle" or command == "baseangle" or command == "pointalpha" or command == "alpha":
+    elif command == "pointbaseangle" or command == "baseangle" or command == "pointalpha" or command == "alpha" or command == "PointBaseAngle":
         if secondCommand != None: p1 = str(secondCommand)
         else: p1 = str(input("Enter name of point: "))
         print("Base angle of " + p1 + " is " + str(pointBaseAngle(p1)))
